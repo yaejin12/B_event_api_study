@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("/events")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin
 public class EventController {
 
     private final EventService eventService;
@@ -32,8 +31,8 @@ public class EventController {
 
         Map<String, Object> events = eventService.getEvents(pageNo, sort);
 
-        //의도적으로 2초간 로딩을 설정
-        Thread.sleep(1000);
+        // 의도적으로 2초간의 로딩을 설정
+        Thread.sleep(2000);
 
         return ResponseEntity.ok().body(events);
     }
