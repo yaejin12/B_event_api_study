@@ -8,9 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EventUserSaveDto {
+public class LoginRequestDto {
 
     private String email;
     private String password;
 
+    // 자동로그인 여부 ...
 }

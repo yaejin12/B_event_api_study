@@ -7,8 +7,9 @@ import java.util.Optional;
 
 public interface EventUserRepository extends JpaRepository<EventUser, String> {
 
-    //query method로 Jpql 생성
+    // query method로 Jpql 생성
     boolean existsByEmail(String email);
 
     Optional<EventUser> findByEmail(String email);
+
 }
