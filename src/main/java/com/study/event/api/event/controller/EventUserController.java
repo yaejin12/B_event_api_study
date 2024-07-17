@@ -12,6 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+import java.util.NoSuchElementException;
+
+import static com.study.event.api.auth.TokenProvider.*;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -69,12 +74,22 @@ public class EventUserController {
 
     }
 
-    //premium 회원으로 등업하는 요청처리
+    // Premium회원으로 등급업하는 요청처리
     @PutMapping("/promote")
     public ResponseEntity<?> promote(
-            @AuthenticationPrincipal TokenProvider provider
-            ){
+            @AuthenticationPrincipal TokenUserInfo userInfo
+    ) {
 
+        try {
+            LoginResponseDto dto = eventUserService.promoteToPremium(userInfo.getUserId());
+            return ResponseEntity.ok().body(dto);
+        } catch (NoSuchElementException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+//        catch (SQLException e) {
+//            return ResponseEntity.internalServerError().body();
+//        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.study.event.api.event.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -53,5 +54,9 @@ public class EventUser {
     public void confirm(String password) {
         this.password = password;
         this.createAt = LocalDateTime.now();
+    }
+
+    public void promoteToPremium() {
+        this.role = Role.PREMIUM;
     }
 }

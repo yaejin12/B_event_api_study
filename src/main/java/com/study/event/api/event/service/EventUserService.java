@@ -67,8 +67,8 @@ public class EventUserService {
         if (!eventUser.isEmailVerified() || eventUser.getPassword() == null) {
             // 기존 인증코드가 있는 경우 삭제
             EmailVerification ev = emailVerificationRepository
-                                    .findByEventUser(eventUser)
-                                    .orElse(null);
+                    .findByEventUser(eventUser)
+                    .orElse(null);
 
             if (ev != null) emailVerificationRepository.delete(ev);
 
@@ -244,4 +244,22 @@ public class EventUserService {
                 .build();
     }
 
+    // 등업 처리
+    public LoginResponseDto promoteToPremium(String userId) {
+        // 회원 탐색
+        EventUser eventUser = eventUserRepository.findById(userId).orElseThrow();
+
+        // 등급 변경
+        eventUser.promoteToPremium();
+        EventUser promotedUser = eventUserRepository.save(eventUser);
+
+        // 토큰 재발급
+        String token = tokenProvider.createToken(promotedUser);
+
+        return LoginResponseDto.builder()
+                .token(token)
+                .role(promotedUser.getRole().toString())
+                .email(promotedUser.getEmail())
+                .build();
+    }
 }
